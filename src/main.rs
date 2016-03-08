@@ -34,28 +34,8 @@ impl TrieNode {
     fn insert(&mut self, word: &String) {
         //Transform word to a character iterator
         let word = word.to_lowercase();
-        let mut word = word.chars();
-
-        //Match against the word
-        match word.next() {
-            //We managed to insert nothing, good job.
-            None => return,
-            //We have a character to work with
-            Some(c) => {
-                //Find the index and match against it
-                let index = (c as usize) - ('a' as usize);
-                match self.children[index]{
-                    //Init the node.
-                    None => {
-                        self.children[index] = Some(Box::new(Default::default()));
-                        let mut c = self.children[index].as_mut().unwrap();
-                        TrieNode::insert_internal(&mut *c, word);
-                    },
-                    //Node is already initialized, continue recursively
-                    Some(ref mut c) => TrieNode::insert_internal(&mut *c, word),
-                }
-            }
-        }
+        let word = word.chars();
+        self.insert_internal(word);
     }
 
     fn contains_internal(&self, mut word: Chars) -> bool {
