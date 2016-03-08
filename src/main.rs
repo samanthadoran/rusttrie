@@ -21,11 +21,8 @@ impl TrieNode {
                     //If not, init and rematch
                     None => {
                         self.children[index] = Some(Box::new(Default::default()));
-                        //Gross double match to work around E0508?
-                        match self.children[index]{
-                            Some(ref mut c) => TrieNode::insert_internal(&mut *c, word),
-                            None => {},
-                        }
+                        let mut c = self.children[index].as_mut().unwrap();
+                        TrieNode::insert_internal(&mut *c, word);
                     },
                     //Otherwise, continue recursively
                     Some(ref mut c) => TrieNode::insert_internal(&mut *c, word),
@@ -51,11 +48,8 @@ impl TrieNode {
                     //Init the node.
                     None => {
                         self.children[index] = Some(Box::new(Default::default()));
-                        //Gross double match to wrk around E0508?
-                        match self.children[index]{
-                            Some(ref mut c) => TrieNode::insert_internal(&mut *c, word),
-                            None => {},
-                        }
+                        let mut c = self.children[index].as_mut().unwrap();
+                        TrieNode::insert_internal(&mut *c, word);
                     },
                     //Node is already initialized, continue recursively
                     Some(ref mut c) => TrieNode::insert_internal(&mut *c, word),
